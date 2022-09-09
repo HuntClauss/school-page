@@ -1,10 +1,10 @@
 <script lang="ts">
 
+import DutyPage from "./page/DutyPage.svelte";
 </script>
 
-<main>
-
-</main>
+<!-- TODO router -->
+<DutyPage/>
 
 <style>
 
