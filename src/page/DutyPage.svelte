@@ -25,7 +25,6 @@
 	<div class="day-selector">
 		<Carousel keys="{working_days}" selected="{selected_day}"/>
 	</div>
-	<div class="horizontal-line"></div>
 </div>
 
 <style>
@@ -53,15 +52,6 @@
 
 	.day-selector {
 		display: flex;
-	}
-
-	.horizontal-line {
-		width: 100%;
-		height: 2px;
-		background-color: #000;
-		z-index: 0;
-		position: absolute;
-		bottom: 0;
 	}
 
 </style>
