@@ -2,25 +2,22 @@
 	import {onMount} from "svelte";
 
 	export let keys = []
-	export let selected = keys[0]
+	export let selected = keys[0] ?? ''
 	let div
 	let instascroll = true
 
-	const in_half = window.innerWidth / 2
-
 	function select(e: PointerEvent) {
 		const target = e.target as HTMLElement
-		const pos = target.getBoundingClientRect()
+		target.scrollIntoView({behavior: 'smooth', inline: 'center'})
+		// const pos = target.getBoundingClientRect()
 
-		div.scrollLeft -= in_half - (pos.x + pos.width / 2)
+		// div.scrollLeft -= in_half - (pos.x + pos.width / 2)
 	}
 
 	onMount(() => {
 		const target = document.querySelector('div.key.active') as HTMLElement
-		const pos = target.getBoundingClientRect()
+		target.scrollIntoView({behavior: 'auto', inline: 'center'})
 
-		div.scrollLeft -= in_half - (pos.x + pos.width / 2)
-		instascroll = false
 	})
 
 </script>
@@ -36,12 +33,16 @@
 	<div class="spacer"></div>
 </div>
 
+
 <style>
 	.wrapper {
 		display: flex;
 		overflow-y: auto;
-		padding: 0.5rem 0;
+		box-sizing: border-box;
 		scroll-behavior: smooth;
+		scroll-snap-type: x proximity;
+		padding-bottom: 8px;
+		/*scroll-snap-destination: 0 16px;*/
 	}
 
 	.instascroll {
@@ -56,13 +57,27 @@
 		text-transform: uppercase;
 		margin: 0 2rem;
 		cursor: pointer;
-		transition: all 0.1s ease-in-out;
 		font-weight: 100;
 		font-size: 18px;
+		scroll-snap-align: center;
+		transition: all 0.2s ease-in-out;
+		position: relative;
 	}
 
 	.active {
-		transform: scale(1.75);
+		color: #1E62C7;
+		transition: all .2s ease-in-out;
+	}
+
+	.active:after {
+		position: absolute;
+		content: '';
+		width: 100%;
+		height: 2px;
+		background-color: #1E62C7;
+		bottom: -8px;
+		left: 0;
+		z-index: 1;
 	}
 
 	.spacer {
