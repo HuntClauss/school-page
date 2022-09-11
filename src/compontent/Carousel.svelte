@@ -2,35 +2,58 @@
 	import {onMount} from "svelte";
 
 	export let keys = []
-	export let selected = keys[0] ?? ''
-	let div, indicator
+	export let selected = 0
+	export let clicked = false
+	$: select(selected)
+
+	let div: HTMLElement, indicator: HTMLElement
+	let _keys_refs = new Array(keys.length)
 	let delayed = true
 
-	function select(e: PointerEvent) {
-		const target = e.target as HTMLElement
-		target.scrollIntoView({behavior: 'smooth', inline: 'center'})
+	let previous_timeout = null
+	function select(index: number, click?: boolean) {
+		if (!_keys_refs[index]) return
+		const target = _keys_refs[index]
+
+		if (click === true && previous_timeout)
+			clearTimeout(previous_timeout)
+
+		if (click === true) {
+			clicked = true
+			previous_timeout = setTimeout(() => clicked = false, 500)
+		}
+
+		selected = index
+
+		const middle_pos = target.offsetLeft + target.clientWidth / 2 - window.innerWidth / 2
+		div.scrollTo({left: middle_pos, behavior: 'smooth'})
 
 		indicator.style.left = `${target.offsetLeft}px`
 		indicator.style.width = `${target.offsetWidth}px`
 	}
 
 	onMount(() => {
-		const target = document.querySelector('div.key.active') as HTMLElement
-		target.scrollIntoView({behavior: 'auto', inline: 'center'})
+		const target = _keys_refs[selected]
+		const middle_pos = target.offsetLeft + target.clientWidth / 2 - window.innerWidth / 2
+		div.scrollTo({left: middle_pos, behavior: 'auto'})
 
 		indicator.style.left = `${target.offsetLeft}px`
 		indicator.style.width = `${target.offsetWidth}px`
 		delayed = false
 	})
 
+
 </script>
+
+<svelte:window on:resize={_ => select(selected)}></svelte:window>
 
 <div class="wrapper" bind:this={div}>
 	<div class="spacer"></div>
-	{#each keys as key}
+	{#each keys as key, i}
 		<div class="key"
-		     class:active={selected === key}
-		     on:click={e => {selected = key; select(e)}}
+		     bind:this={_keys_refs[i]}
+		     class:active={selected === i}
+		     on:click={_ => {select(i, true)}}
 		>{key}</div>
 	{/each}
 	<div class="spacer"></div>
