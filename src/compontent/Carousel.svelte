@@ -20,7 +20,7 @@
 
 		if (click === true) {
 			clicked = true
-			previous_timeout = setTimeout(() => clicked = false, 500)
+			previous_timeout = setTimeout(() => clicked = false, 600)
 		}
 
 		selected = index
