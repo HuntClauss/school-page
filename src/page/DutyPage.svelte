@@ -3,17 +3,16 @@
 	import HamburgerMenu from "../compontent/HamburgerMenu.svelte";
 	import InputBar from "../compontent/InputBar.svelte";
 	import Carousel from "../compontent/Carousel.svelte";
-	import {times, working_days} from '../const'
+	import {ITouchCtx, times, working_days} from '../const'
 	import ExpandList from "../compontent/ExpandList.svelte";
 	import {onMount} from "svelte";
 	import {duties_accu} from "../store"
 
 	let filter = ''
 	let selected_index = default_selection()
-	let _duties_ref = new Array(working_days.length)
+	let _duties_ref = new Array(3)
 	let div: HTMLElement
-	let clicked = false
-	let moving = false
+	let block = false
 
 	$: change_day(selected_index)
 
@@ -23,35 +22,67 @@
 	}
 
 	function change_day(index: number) {
-		if (!_duties_ref[index] || moving) return
-		div.scrollTo({left: _duties_ref[index].offsetLeft, behavior: 'smooth'})
+		if (!_duties_ref[index]) return
 	}
 
 	onMount(async () => {
-		div.scrollTo({left: _duties_ref[selected_index].offsetLeft, behavior: 'auto'})
 		const resp = await fetch('/data/duties.json')
 		$duties_accu = await resp.json()
 	})
 
-	const margin = 0
-	function swipe_day(e: Event) {
-		if (clicked) return
-		const curr_pos = (e.target as HTMLElement).scrollLeft
-		const middle = window.innerWidth / 2
-
-		moving = false
-		for (let i = 0; i < _duties_ref.length; i++) {
-			const panel = _duties_ref[i]
-			if (selected_index != i && boundCheck(curr_pos + middle, panel.offsetLeft, panel.clientWidth, margin)) {
-					moving = true
-					selected_index = i
-			}
+	const touch_ctx: ITouchCtx = {start: undefined, boundaries: [], index: 0, width: 0}
+	function touch_start(e: TouchEvent) {
+		touch_ctx.width = _duties_ref[1].clientWidth
+		touch_ctx.start = e.touches.item(0).clientX
+		touch_ctx.index = selected_index
+		for (let i = 0; i < 3; i++) {
+			touch_ctx.boundaries[i] = _duties_ref[i].offsetLeft
+			_duties_ref[i].style.transition = ''
 		}
 	}
 
-	function boundCheck(current: number, start: number, width: number, margin: number): boolean {
-		return (current > start - margin && current < start + width + margin)
+	const margin = 160
+	function touch_move(e: TouchEvent) {
+		const pos = e.touches.item(0).clientX
+		// console.log('change', touch_ctx.start - pos)
+		const v_c = - (touch_ctx.start - pos)
+		for (let i = 0; i < 3; i++) {
+			_duties_ref[i].style.left = `${v_c}px`
+		}
+
+		console.log(_duties_ref[1].offsetLeft, touch_ctx.width / 2)
+
+
+		// if (touch_ctx.boundaries[0] >= _duties_ref[1].offsetLeft) {
+		// 	selected_index = touch_ctx.index + 1
+		// 	// console.log('change page')
+		// }
 	}
+
+	function touch_end(e: TouchEvent) {
+		console.log('end', e)
+		touch_ctx.start = undefined
+
+		let pos = 0
+		if (_duties_ref[1].offsetLeft < -touch_ctx.width / 2) {
+			pos = -touch_ctx.width
+		} else
+		if (_duties_ref[1].offsetLeft > touch_ctx.width / 2) {
+			pos = touch_ctx.width
+		} else {
+			// pos =
+		}
+
+		for (let i = 0; i < 3; i++) {
+			_duties_ref[i].style.transition = 'all .2s ease-out'
+			_duties_ref[i].style.left = `${pos}px`
+		}
+
+	}
+
+	// function boundaryCheck(curr: number, start: number, width: number, margin: number): boolean {
+	// 	return (curr )
+	// }
 
 </script>
 
@@ -63,41 +94,54 @@
 		<InputBar bind:value={filter}/>
 	</div>
 	<div class="day-selector">
-		<Carousel keys="{working_days}" bind:selected="{selected_index}" bind:clicked={clicked}/>
+		<Carousel keys="{working_days}" bind:selected="{selected_index}" bind:block={block}/>
 	</div>
-	<div class="plan-wrapper" bind:this={div} on:scroll={swipe_day}>
-		{#each Object.keys(working_days) as _, day}
-			<div class="duties" bind:this={_duties_ref[day]}>
-				{#each Object.keys(times) as _, time}
-					<ExpandList dayKey={day} timeKey="{time}"/>
-				{/each}
-			</div>
-		{/each}
+	<div class="plan-wrapper" bind:this={div} on:touchmove={touch_move} on:touchstart={touch_start} on:touchend={touch_end}>
+		<div class="duties" bind:this={_duties_ref[0]}>
+			{#each Object.keys(times) as _, time}
+				<ExpandList dayKey={selected_index - 1} timeKey="{time}"/>
+			{/each}
+		</div>
+		<div class="duties" bind:this={_duties_ref[1]}>
+			{#each Object.keys(times) as _, time}
+				<ExpandList dayKey={selected_index} timeKey="{time}"/>
+			{/each}
+		</div>
+		<div class="duties" bind:this={_duties_ref[2]}>
+			{#each Object.keys(times) as _, time}
+				<ExpandList dayKey={selected_index + 1} timeKey="{time}"/>
+			{/each}
+		</div>
 	</div>
 </div>
 
 <style>
-	.plan-wrapper {
-		display: flex;
-		overflow-y: auto;
-		scroll-snap-type: x mandatory;
+	.wrapper {
+		/*position: relative;*/
 	}
 
-	.plan-wrapper::-webkit-scrollbar {
-		display: none;
+	.plan-wrapper {
+		/*position: relative;*/
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
 	}
 
 	.duties {
+		position: relative;
 		min-width: 100vw;
-		scroll-snap-align: center;
-		margin: 0 1rem;
-		scroll-snap-stop: always;
+		margin-right: 2rem;
+		/*transition: all .2s ease-out;*/
 	}
+
+	.duties:last-child {
+		margin-right: 0;
+	}
+
 
 	.wrapper {
 		display: flex;
 		flex-direction: column;
-		position: relative;
 	}
 
 	.navigation {

@@ -3,26 +3,15 @@
 
 	export let keys = []
 	export let selected = 0
-	export let clicked = false
 	$: select(selected)
 
 	let div: HTMLElement, indicator: HTMLElement
 	let _keys_refs = new Array(keys.length)
 	let delayed = true
 
-	let previous_timeout = null
-	function select(index: number, click?: boolean) {
+	function select(index: number) {
 		if (!_keys_refs[index]) return
 		const target = _keys_refs[index]
-
-		if (click === true && previous_timeout)
-			clearTimeout(previous_timeout)
-
-		if (click === true) {
-			clicked = true
-			previous_timeout = setTimeout(() => clicked = false, 600)
-		}
-
 		selected = index
 
 		const middle_pos = target.offsetLeft + target.clientWidth / 2 - window.innerWidth / 2
@@ -42,7 +31,6 @@
 		delayed = false
 	})
 
-
 </script>
 
 <svelte:window on:resize={_ => select(selected)}></svelte:window>
@@ -51,9 +39,9 @@
 	<div class="spacer"></div>
 	{#each keys as key, i}
 		<div class="key"
-		     bind:this={_keys_refs[i]}
-		     class:active={selected === i}
-		     on:click={_ => {select(i, true)}}
+			bind:this={_keys_refs[i]}
+	     class:active={selected === i}
+	     on:click={() => select(i)}
 		>{key}</div>
 	{/each}
 	<div class="spacer"></div>
@@ -66,7 +54,7 @@
 		display: flex;
 		overflow-y: auto;
 		box-sizing: border-box;
-		scroll-snap-type: x proximity;
+		scroll-snap-type: x mandatory;
 		padding-bottom: 8px;
 		position: relative;
 	}
@@ -82,13 +70,13 @@
 		font-weight: 200;
 		font-size: 26px;
 		scroll-snap-align: center;
-		transition: all 0.2s ease-in-out;
+		transition: all 0.35s ease-in-out;
 		position: relative;
 	}
 
 	.active {
 		color: #5486ce;
-		transition: all .2s ease-in-out;
+		transition: all .35s ease-in-out;
 	}
 
 	.spacer {
@@ -105,7 +93,7 @@
 		bottom: 0;
 		left: 0;
 		z-index: 2;
-		transition: all .2s ease-in-out;
+		transition: all .35s ease-in-out;
 	}
 
 	.hidden {
