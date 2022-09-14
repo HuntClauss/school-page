@@ -7,7 +7,6 @@
 	export let timeKey = 0
 	let duties
 	$: duties = $duties_accu[dayKey][timeKey]
-
 	let collapsed = true
 
 	function toggle() {

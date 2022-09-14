@@ -9,81 +9,97 @@
 	import {duties_accu} from "../store"
 
 	let filter = ''
-	let selected_index = default_selection()
-	let _duties_ref = new Array(3)
+	let panel_index = default_selection()
+	let _duties_ref = new Array(5)
 	let div: HTMLElement
-	let block = false
+	$: changePlan(panel_index)
 
-	$: change_day(selected_index)
-
-	function default_selection() {
+	function default_selection(): number {
 		const curr_day = new Date().getDay()
 		return (1 < curr_day && curr_day < 6) ? curr_day - 1 : 2
 	}
 
-	function change_day(index: number) {
-		if (!_duties_ref[index]) return
+	let offsets = new Array(working_days.length)
+	function setup_offsets() {
+		_duties_ref.forEach((ref, i) => {
+			offsets[i] = - (ref.offsetLeft - parseInt(ref.style.left))
+		})
 	}
 
+	function setup_transition() {
+		_duties_ref.forEach(ref => {
+			ref.style.transition = 'all .2s ease-out'
+		})
+	}
+
+	function changePlan(index: number) {
+		if (!_duties_ref[index]) return
+
+		_duties_ref.forEach(ref => {
+			ref.style.left = `${offsets[index]}px`
+		})
+	}
+
+
 	onMount(async () => {
+		const pos = -_duties_ref[panel_index].offsetLeft
+		_duties_ref.forEach(ref => {
+			ref.style.left = `${pos}px`
+		})
+		setup_offsets()
+		setup_transition()
+
 		const resp = await fetch('/data/duties.json')
 		$duties_accu = await resp.json()
 	})
 
-	const touch_ctx: ITouchCtx = {start: undefined, boundaries: [], index: 0, width: 0}
+	const touch_ctx: ITouchCtx = {start: undefined, boundaries: [], position: 0, distance: 0, moving: false}
 	function touch_start(e: TouchEvent) {
-		touch_ctx.width = _duties_ref[1].clientWidth
 		touch_ctx.start = e.touches.item(0).clientX
-		touch_ctx.index = selected_index
-		for (let i = 0; i < 3; i++) {
-			touch_ctx.boundaries[i] = _duties_ref[i].offsetLeft
-			_duties_ref[i].style.transition = ''
-		}
+
+		_duties_ref.forEach((ref, i) => {
+			ref.style.transition = ''
+			touch_ctx.boundaries[i] = ref.offsetLeft
+		})
 	}
 
-	const margin = 160
 	function touch_move(e: TouchEvent) {
 		const pos = e.touches.item(0).clientX
-		// console.log('change', touch_ctx.start - pos)
-		const v_c = - (touch_ctx.start - pos)
-		for (let i = 0; i < 3; i++) {
-			_duties_ref[i].style.left = `${v_c}px`
+		const v_c = -(touch_ctx.start - pos - offsets[panel_index])
+
+		if (touch_ctx.moving || Math.abs(touch_ctx.start - pos) > 50) {
+			touch_ctx.moving = true
+			_duties_ref.forEach(ref => {
+				ref.style.left = `${v_c}px`
+			})
 		}
-
-		console.log(_duties_ref[1].offsetLeft, touch_ctx.width / 2)
-
-
-		// if (touch_ctx.boundaries[0] >= _duties_ref[1].offsetLeft) {
-		// 	selected_index = touch_ctx.index + 1
-		// 	// console.log('change page')
-		// }
 	}
 
 	function touch_end(e: TouchEvent) {
-		console.log('end', e)
 		touch_ctx.start = undefined
+		touch_ctx.moving = false
 
-		let pos = 0
-		if (_duties_ref[1].offsetLeft < -touch_ctx.width / 2) {
-			pos = -touch_ctx.width
+		const left = touch_ctx.boundaries[panel_index - 1]
+		const mid = _duties_ref[panel_index].offsetLeft
+		const right = touch_ctx.boundaries[panel_index + 1]
+
+		const center = window.innerWidth / 2
+
+		let pos = offsets[panel_index]
+		if (panel_index != working_days.length - 1 && mid - center < -right) {
+			pos = offsets[++panel_index]
+			console.log(pos, "change to right")
 		} else
-		if (_duties_ref[1].offsetLeft > touch_ctx.width / 2) {
-			pos = touch_ctx.width
-		} else {
-			// pos =
+		if (panel_index !== 0 && mid + center > -left) {
+			pos = offsets[--panel_index]
+			console.log("change to left")
 		}
 
-		for (let i = 0; i < 3; i++) {
-			_duties_ref[i].style.transition = 'all .2s ease-out'
-			_duties_ref[i].style.left = `${pos}px`
-		}
-
+		_duties_ref.forEach(ref => {
+			ref.style.transition = 'all .2s ease-out'
+			ref.style.left = `${pos}px`
+		})
 	}
-
-	// function boundaryCheck(curr: number, start: number, width: number, margin: number): boolean {
-	// 	return (curr )
-	// }
-
 </script>
 
 <div class="wrapper">
@@ -94,24 +110,19 @@
 		<InputBar bind:value={filter}/>
 	</div>
 	<div class="day-selector">
-		<Carousel keys="{working_days}" bind:selected="{selected_index}" bind:block={block}/>
+		<Carousel keys="{working_days}" bind:selected="{panel_index}"/>
 	</div>
-	<div class="plan-wrapper" bind:this={div} on:touchmove={touch_move} on:touchstart={touch_start} on:touchend={touch_end}>
-		<div class="duties" bind:this={_duties_ref[0]}>
-			{#each Object.keys(times) as _, time}
-				<ExpandList dayKey={selected_index - 1} timeKey="{time}"/>
-			{/each}
-		</div>
-		<div class="duties" bind:this={_duties_ref[1]}>
-			{#each Object.keys(times) as _, time}
-				<ExpandList dayKey={selected_index} timeKey="{time}"/>
-			{/each}
-		</div>
-		<div class="duties" bind:this={_duties_ref[2]}>
-			{#each Object.keys(times) as _, time}
-				<ExpandList dayKey={selected_index + 1} timeKey="{time}"/>
-			{/each}
-		</div>
+	<div class="plan-wrapper"
+	     bind:this={div}
+	     on:touchmove={touch_move} on:touchstart={touch_start} on:touchend={touch_end}>
+		{#each Object.keys(working_days) as _, day}
+			<div class="duties" bind:this={_duties_ref[day]}>
+				{#each Object.keys(times) as _, time}
+					{day}
+					<ExpandList dayKey="{day}" timeKey="{time}"/>
+				{/each}
+			</div>
+		{/each}
 	</div>
 </div>
 

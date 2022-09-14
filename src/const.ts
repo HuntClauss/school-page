@@ -16,8 +16,9 @@ export const times = [
 export interface ITouchCtx {
     start: number | undefined;
     boundaries: number[];
-    index: number;
-    width: number;
+    position: number;
+    distance: number;
+    moving: boolean;
     // end: number | undefined;
 }
 
