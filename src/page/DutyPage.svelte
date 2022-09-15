@@ -89,7 +89,7 @@
 		const mid = _duties_ref[panel_index].offsetLeft
 		const right = touch_ctx.boundaries[panel_index + 1]
 
-		const center = window.innerWidth / 2
+		const center = window.innerWidth * 0.75 // bigger number = more gentle transition from cards
 
 		let pos = offsets[panel_index]
 		if (panel_index != working_days.length - 1 && mid - center < -right) {
@@ -138,7 +138,13 @@
 	.plan-wrapper {
 		display: flex;
 		justify-content: center;
-		overflow: hidden;
+		overflow-x: hidden;
+		height: 100%;
+		scrollbar-width: none;
+	}
+
+	.plan-wrapper::-webkit-scrollbar {
+		display: none;
 	}
 
 	.duties {
@@ -155,6 +161,7 @@
 	.wrapper {
 		display: flex;
 		flex-direction: column;
+		height: 100%;
 	}
 
 	.navigation {

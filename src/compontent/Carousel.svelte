@@ -96,9 +96,9 @@
 		display: flex;
 		overflow-y: auto;
 		box-sizing: border-box;
-		/*scroll-snap-type: x mandatory;*/
 		padding-bottom: 8px;
 		position: relative;
+		scrollbar-width: none;
 	}
 
 	.wrapper::-webkit-scrollbar {
@@ -107,7 +107,7 @@
 
 	.key {
 		text-transform: uppercase;
-		margin: 0 2rem;
+		margin: 0 1.5rem;
 		cursor: pointer;
 		font-weight: 200;
 		font-size: 26px;
