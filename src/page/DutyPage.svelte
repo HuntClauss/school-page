@@ -56,9 +56,11 @@
 		$duties_accu = await resp.json()
 	})
 
-	const touch_ctx: ITouchCtx = {start: undefined, boundaries: [], position: 0, distance: 0, moving: false}
+	const touch_ctx: ITouchCtx = {start: undefined, start_time: undefined, boundaries: [], moving: false}
 	function touch_start(e: TouchEvent) {
 		touch_ctx.start = e.touches.item(0).clientX
+		touch_ctx.start_time = e.timeStamp
+
 		meta.position = 0
 		meta.distance = offsets[0] - offsets[1]
 
@@ -73,7 +75,7 @@
 		const v_c = -(touch_ctx.start - pos - offsets[panel_index])
 		const v_i = -(touch_ctx.start - pos)
 
-		if (touch_ctx.moving || Math.abs(touch_ctx.start - pos) > 50) {
+		if (touch_ctx.moving || Math.abs(touch_ctx.start - pos) > 30) {
 			touch_ctx.moving = true
 			meta.position = v_i
 			_duties_ref.forEach(ref => {
@@ -82,9 +84,15 @@
 		}
 	}
 
-	function touch_end() {
-		touch_ctx.start = undefined
+	function touch_end(e: TouchEvent) {
 		touch_ctx.moving = false
+
+		let direction = 0
+		if (e.changedTouches.length !== 0 && e.timeStamp - touch_ctx.start_time < 150) {
+			direction = touch_ctx.start - e.changedTouches.item(0).clientX
+		}
+		console.log('dir', direction)
+
 
 		const left = touch_ctx.boundaries[panel_index - 1]
 		const mid = _duties_ref[panel_index].offsetLeft
@@ -93,11 +101,11 @@
 		const center = window.innerWidth * 0.75 // bigger number = more gentle transition from cards
 
 		let pos = offsets[panel_index]
-		if (panel_index != working_days.length - 1 && mid - center < -right) {
+		if (panel_index != working_days.length - 1 && (mid - center < -right || direction > 25)) {
 			pos = offsets[++panel_index]
 			console.log(pos, "change to right")
 		} else
-		if (panel_index !== 0 && mid + center > -left) {
+		if (panel_index !== 0 && (mid + center > -left || direction < -25)) {
 			pos = offsets[--panel_index]
 			console.log("change to left")
 		} else {
