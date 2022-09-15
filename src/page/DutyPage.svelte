@@ -12,6 +12,8 @@
 	let panel_index = default_selection()
 	let _duties_ref = new Array(5)
 	let div: HTMLElement
+	let meta = {position: 0, distance: 0}
+
 	$: changePlan(panel_index)
 
 	function default_selection(): number {
@@ -56,6 +58,8 @@
 	const touch_ctx: ITouchCtx = {start: undefined, boundaries: [], position: 0, distance: 0, moving: false}
 	function touch_start(e: TouchEvent) {
 		touch_ctx.start = e.touches.item(0).clientX
+		meta.position = 0
+		meta.distance = offsets[0] - offsets[1]
 
 		_duties_ref.forEach((ref, i) => {
 			ref.style.transition = ''
@@ -66,16 +70,18 @@
 	function touch_move(e: TouchEvent) {
 		const pos = e.touches.item(0).clientX
 		const v_c = -(touch_ctx.start - pos - offsets[panel_index])
+		const v_i = -(touch_ctx.start - pos)
 
 		if (touch_ctx.moving || Math.abs(touch_ctx.start - pos) > 50) {
 			touch_ctx.moving = true
+			meta.position = v_i
 			_duties_ref.forEach(ref => {
 				ref.style.left = `${v_c}px`
 			})
 		}
 	}
 
-	function touch_end(e: TouchEvent) {
+	function touch_end() {
 		touch_ctx.start = undefined
 		touch_ctx.moving = false
 
@@ -93,7 +99,10 @@
 		if (panel_index !== 0 && mid + center > -left) {
 			pos = offsets[--panel_index]
 			console.log("change to left")
+		} else {
+			meta.position = 0
 		}
+
 
 		_duties_ref.forEach(ref => {
 			ref.style.transition = 'all .2s ease-out'
@@ -110,7 +119,7 @@
 		<InputBar bind:value={filter}/>
 	</div>
 	<div class="day-selector">
-		<Carousel keys="{working_days}" bind:selected="{panel_index}"/>
+		<Carousel keys="{working_days}" bind:selected="{panel_index}" meta="{meta}"/>
 	</div>
 	<div class="plan-wrapper"
 	     bind:this={div}
@@ -118,7 +127,6 @@
 		{#each Object.keys(working_days) as _, day}
 			<div class="duties" bind:this={_duties_ref[day]}>
 				{#each Object.keys(times) as _, time}
-					{day}
 					<ExpandList dayKey="{day}" timeKey="{time}"/>
 				{/each}
 			</div>
@@ -127,12 +135,7 @@
 </div>
 
 <style>
-	.wrapper {
-		/*position: relative;*/
-	}
-
 	.plan-wrapper {
-		/*position: relative;*/
 		display: flex;
 		justify-content: center;
 		overflow: hidden;
@@ -142,7 +145,6 @@
 		position: relative;
 		min-width: 100vw;
 		margin-right: 2rem;
-		/*transition: all .2s ease-out;*/
 	}
 
 	.duties:last-child {

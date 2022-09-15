@@ -1,22 +1,33 @@
 <script lang="ts">
 
 	import {times} from "../const";
-	import {duties_accu} from "../store";
+	import {duties_accu, filters} from "../store";
 
 	export let dayKey = 0
 	export let timeKey = 0
 	let duties
-	$: duties = $duties_accu[dayKey][timeKey]
+	$: duties = apply_filter($duties_accu[dayKey][timeKey], $filters)
 	let collapsed = true
 
 	function toggle() {
 		collapsed = !collapsed
 	}
 
+	function apply_filter(list, filter: string[]) {
+		let result = []
+		if (filter.length === 0) return list
+		list.forEach(entry => {
+			if (filter.includes(entry.place) || filter.includes(entry.person)) {
+				result.push(entry)
+			}
+		})
+		return result
+	}
+
 </script>
 
 <div class="wrapper">
-	<div class="section">
+	<div class="section" class:hidden={duties.length === 0}>
 		<div class="time" on:click={toggle}>{`${times[timeKey].start} - ${times[timeKey].end}`}</div>
 		<div class="item-list" class:collapsed>
 			{#each duties as duty}
@@ -32,6 +43,10 @@
 <style>
 	.place {
 		width: 50%;
+	}
+
+	.hidden {
+		display: none
 	}
 
 	.time {

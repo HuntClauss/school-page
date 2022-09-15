@@ -1,11 +1,25 @@
 <script lang="ts">
+	import {duties_accu, filters} from "../store";
+
 	export let value = ''
 	let collapsed = true
-	const options = ['Sobiło Sławomir', 'Joanna Wabich', 'Zenon Kupsik', 'Bufet - Łazienka', 'Łącznik', 'Wejście główne']
+	let options = []
 
-	let filters = ['Sobiło Sławomir']
 	let suggestions
-	$: suggestions = show_suggestions(value)
+	$: suggestions = show_suggestions(value), $filters
+
+	duties_accu.subscribe(v => {
+		let result = new Set()
+		Object.values(v).forEach(day => {
+			Object.values(day).forEach(time => {
+				Object.values(time).forEach(entry => {
+					result.add(entry.place)
+					result.add(entry.person)
+				})
+			})
+		})
+		options = [...result]
+	})
 
 	function show_suggestions(val: string) {
 		if (!val) return []
@@ -15,7 +29,7 @@
 		options.forEach((opt) => {
 			if (result.length === 4) return
 
-			if (!filters.includes(opt) && parts.some(part => opt.toLowerCase().includes(part))) {
+			if (!$filters.includes(opt) && parts.some(part => opt.toLowerCase().includes(part))) {
 				result.push({value: opt, display: opt})
 			}
 		})
@@ -30,13 +44,17 @@
 
 		return result
 	}
+
+	function add_filter(name) {
+		$filters = [...$filters, name]
+	}
 </script>
 
 <div class="wrapper" >
 	<input type="text" placeholder="Filtruj..." bind:value on:focus={_ => collapsed = false} on:blur={_ => collapsed = true}>
 	<div class="suggestions" class:collapsed>
 		{#each suggestions as item}
-			<div class="item">{@html item.display}</div>
+			<div class="item" on:click={() => add_filter(item.value)}>{@html item.display}</div>
 		{/each}
 	</div>
 </div>

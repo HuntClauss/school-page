@@ -10,4 +10,4 @@ export const duties_accu = writable({
     4: placeholder,
 })
 
-export let suggestions = writable([])
+export const filters = writable([])
