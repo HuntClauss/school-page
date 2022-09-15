@@ -3,7 +3,8 @@
 	import HamburgerMenu from "../compontent/HamburgerMenu.svelte";
 	import InputBar from "../compontent/InputBar.svelte";
 	import Carousel from "../compontent/Carousel.svelte";
-	import {ITouchCtx, times, working_days} from '../const'
+	import {times, working_days} from '../const'
+	import type {ITouchCtx} from "../types";
 	import ExpandList from "../compontent/ExpandList.svelte";
 	import {onMount} from "svelte";
 	import {duties_accu} from "../store"

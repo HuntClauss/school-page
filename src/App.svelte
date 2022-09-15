@@ -5,7 +5,3 @@ import DutyPage from "./page/DutyPage.svelte";
 
 <!-- TODO router -->
 <DutyPage/>
-
-<style>
-
-</style>

@@ -1,0 +1,21 @@
+:root {
+  color-scheme: light;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  -webkit-text-size-adjust: 100%;
+
+  --background: #DFDFDF;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+  min-height: 100%;
+  box-sizing: border-box;
+  background-color: var(--background);
+  font-family: "Open Sans", sans-serif;
+}

@@ -12,14 +12,3 @@ export const times = [
     {start: '16:40', end: '16:45'},
     {start: '17:30', end: '17:35'},
 ]
-
-export interface ITouchCtx {
-    start: number | undefined;
-    boundaries: number[];
-    position: number;
-    distance: number;
-    moving: boolean;
-    // end: number | undefined;
-}
-
-
