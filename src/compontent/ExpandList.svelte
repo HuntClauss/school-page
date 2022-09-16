@@ -6,6 +6,8 @@
 
 	export let dayKey = 0
 	export let timeKey = 0
+	export let elements = 0
+
 	let duties
 	$: duties = apply_filter($duties_accu[dayKey][timeKey], $filters)
 	let collapsed = true
@@ -16,6 +18,7 @@
 
 	function apply_filter(list, filter: string[]) {
 		let result = []
+		elements = list.length
 		if (filter.length === 0) return list
 		filter = filter.map(v => v.toLowerCase())
 
@@ -24,6 +27,7 @@
 				result.push(entry)
 			}
 		})
+		elements = result.length
 		return result
 	}
 
@@ -32,10 +36,9 @@
 <div class="wrapper">
 	<div class="section" class:collapsed class:hidden={duties.length === 0}>
 		<div class="time" on:click={toggle}>
-			{`${times[timeKey].start} - ${times[timeKey].end}`}
-			<div class="icon">
-				<Icon name="expand.svg" width="24px" height="24px"/>
-			</div>
+			<div class="left"><div></div></div>
+			<div class="middle">{`${times[timeKey].str_start} - ${times[timeKey].str_end}`}</div>
+			<div class="right icon"><Icon name="expand.svg" width="24px" height="24px"/></div>
 		</div>
 		<div class="item-list">
 			{#each duties as duty}
@@ -48,7 +51,15 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
+	/* FEATURE W.I.P. */
+	/*.proposal {*/
+	/*	width: 12px;*/
+	/*	height: 12px;*/
+	/*	border-radius: 50%;*/
+	/*	background-color: var(--accent-color);*/
+	/*}*/
+
 	.place {
 		width: 50%;
 	}
@@ -58,10 +69,8 @@
 	}
 
 	.icon {
-		position: absolute;
-		right: 10px;
-		top: 50%;
-		transform: translateY(-35%);
+		padding-right: 10px;
+		text-align: right;
 		transition: all .25s ease-in-out;
 	}
 
@@ -70,10 +79,29 @@
 		background-color: #D2D2D2;
 		text-align: center;
 		font-size: 16px;
-		padding: 0.5rem 0;
+		padding: 0.2rem 0;
 		margin: 4px 0 0 0;
 		border-radius: 5px;
-		position: relative;
+		display: flex;
+	}
+
+	.time > * {
+		flex: 1;
+		display: flex;
+		align-items: center;
+	}
+
+	.left {
+		justify-content: left;
+		margin-left: 0.5rem;
+	}
+
+	.middle {
+		justify-content: center;
+	}
+
+	.right {
+		justify-content: right;
 	}
 
 	.collapsed .item-list {
@@ -81,10 +109,7 @@
 	}
 
 	.collapsed .time .icon {
-		-moz-transform: scaleY(-1);
-		-o-transform: scaleY(-1);
-		-webkit-transform: scaleY(-1);
-		transform: scaleY(-1);
+		scale: 1 -1;
 		top: 0;
 	}
 

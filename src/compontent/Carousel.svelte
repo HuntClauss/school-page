@@ -91,7 +91,7 @@
 </div>
 
 
-<style>
+<style lang="scss">
 	.wrapper {
 		display: flex;
 		overflow-y: auto;
@@ -99,10 +99,10 @@
 		padding-bottom: 8px;
 		position: relative;
 		scrollbar-width: none;
-	}
 
-	.wrapper::-webkit-scrollbar {
-		display: none;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	.key {
@@ -135,7 +135,6 @@
 		bottom: 0;
 		left: 0;
 		z-index: 2;
-		/*transition: all .35s ease-in-out;*/
 	}
 
 	.hidden {

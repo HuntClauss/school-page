@@ -5,9 +5,13 @@
 	export let value = ''
 	let collapsed = true
 	let options = []
+	let filter: HTMLElement
+
+	let selected = -1
 
 	let suggestions
 	$: suggestions = show_suggestions(value), $filters
+	const max_results = 5
 
 	duties_accu.subscribe(v => {
 		let persons = new Set()
@@ -34,7 +38,7 @@
 		let result = []
 
 		options.forEach((opt) => {
-			if (result.length === 5) return
+			if (result.length === max_results) return
 			if ($filters.includes(opt.name)) return
 
 			const condition = parts.every(part => opt.name.toLowerCase().includes(part)) // AND filter
@@ -62,6 +66,7 @@
 	}
 
 	function add_filter(name: string) {
+		filter.focus()
 		value = ''
 		$filters = [...$filters, name]
 	}
@@ -69,10 +74,39 @@
 	function remove_filter(name: string) {
 		$filters = $filters.filter(v => v !== name)
 	}
+
+	function handle_keypress(e: KeyboardEvent) {
+		switch (e.key) {
+			case 'Enter':
+				e.preventDefault()
+				if (suggestions.length === 1) add_filter(suggestions[0].value)
+				else if (selected >= 0) add_filter(suggestions[selected].value)
+				filter.blur()
+				break
+			case 'ArrowUp':
+				e.preventDefault()
+				if (selected === 0) selected = suggestions.length - 1
+				else selected--
+				break
+			case 'ArrowDown':
+				e.preventDefault()
+				selected = (selected + 1) % max_results
+				break
+			case 'Escape':
+				filter.blur()
+				break
+		}
+	}
+
 </script>
 
 <div class="wrapper" >
-	<input type="text" placeholder="Filtruj..." bind:value on:focus={_ => collapsed = false} on:blur={_ => collapsed = true}>
+	<input type="text" placeholder="Filtruj..."
+	       bind:value
+	       bind:this={filter}
+	       on:focus={_ => {collapsed = false; selected = -1}}
+	       on:blur={_ => collapsed = true}
+	       on:keydown={handle_keypress}>
 	<div class="filter-list">
 		{#each $filters as filter}
 			<div class="filter" on:click={_ => remove_filter(filter)}>
@@ -82,8 +116,8 @@
 		{/each}
 	</div>
 	<div class="suggestions" class:collapsed>
-		{#each suggestions as item}
-			<div class="item" on:click={_ => add_filter(item.value)}>
+		{#each suggestions as item, i}
+			<div class="item" class:selected={Math.min(selected, suggestions.length - 1) === i} on:click={_ => add_filter(item.value)}>
 				<div class="vertical-center">
 					<Icon name="{item.icon}" width="18px" height="18px"/>
 					<span class="space-left">{@html item.display}</span>
@@ -94,7 +128,15 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
+	.selected {
+		background-color: #e6e6e6;
+	}
+
+	.item:hover {
+		background-color: #e6e6e6;
+	}
+
 	.filter-list {
 		display: flex;
 		flex-wrap: wrap;
@@ -112,12 +154,14 @@
 		cursor: pointer;
 	}
 
-	.filter span {
-		margin-right: 4px;
-	}
+	.filter {
+		span {
+			margin-right: 4px;
+		}
 
-	.filter:hover span {
-		text-decoration: line-through;
+		&:hover span {
+			text-decoration: line-through;
+		}
 	}
 
 	.wrapper {
@@ -152,10 +196,10 @@
 		color: #8E8E8E;
 		display: flex;
 		justify-content: space-between;
-	}
 
-	.item:last-child {
-		border: none;
+		&:last-child {
+			border: none;
+		}
 	}
 
 	.vertical-center {

@@ -3,11 +3,11 @@
 	import HamburgerMenu from "../compontent/HamburgerMenu.svelte";
 	import InputBar from "../compontent/InputBar.svelte";
 	import Carousel from "../compontent/Carousel.svelte";
-	import {times, working_days} from '../const'
+	import {working_days} from '../const'
 	import type {ITouchCtx} from "../types";
-	import ExpandList from "../compontent/ExpandList.svelte";
 	import {onMount} from "svelte";
 	import {duties_accu} from "../store"
+	import DayPlan from "../compontent/DayPlan.svelte";
 
 	let filter = ''
 	let panel_index = default_selection()
@@ -56,7 +56,7 @@
 		$duties_accu = await resp.json()
 	})
 
-	const touch_ctx: ITouchCtx = {start: undefined, start_time: undefined, boundaries: [], moving: false}
+	const touch_ctx: ITouchCtx = {start: 0, start_time: 0, boundaries: [], moving: false}
 	function touch_start(e: TouchEvent) {
 		touch_ctx.start = e.touches.item(0).clientX
 		touch_ctx.start_time = e.timeStamp
@@ -91,7 +91,6 @@
 		if (e.changedTouches.length !== 0 && e.timeStamp - touch_ctx.start_time < 150) {
 			direction = touch_ctx.start - e.changedTouches.item(0).clientX
 		}
-		console.log('dir', direction)
 
 
 		const left = touch_ctx.boundaries[panel_index - 1]
@@ -133,39 +132,36 @@
 	<div class="plan-wrapper"
 	     bind:this={div}
 	     on:touchmove={touch_move} on:touchstart={touch_start} on:touchend={touch_end}>
-		{#each Object.keys(working_days) as _, day}
+		{#each new Array(working_days.length) as _, day}
 			<div class="duties" bind:this={_duties_ref[day]}>
-				{#each Object.keys(times) as _, time}
-					<ExpandList dayKey="{day}" timeKey="{time}"/>
-				{/each}
+				<DayPlan day="{day}"/>
 			</div>
 		{/each}
 	</div>
 </div>
 
-<style>
+<style lang="scss">
 	.plan-wrapper {
 		display: flex;
 		justify-content: center;
 		overflow-x: hidden;
 		height: 100%;
 		scrollbar-width: none;
-	}
 
-	.plan-wrapper::-webkit-scrollbar {
-		display: none;
+		&::-webkit-scrollbar {
+			display: none;
+		}
 	}
 
 	.duties {
 		position: relative;
 		min-width: 100vw;
 		margin-right: 2rem;
-	}
 
-	.duties:last-child {
-		margin-right: 0;
+		&:last-child {
+			margin-right: 0;
+		}
 	}
-
 
 	.wrapper {
 		display: flex;

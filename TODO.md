@@ -1,0 +1,2 @@
+- [x] dodanie preprocessingu do cssa
+- [ ] przeniesienie głównych kolorów do globalnych zmiennych

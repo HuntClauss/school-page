@@ -1,6 +1,6 @@
 export type ITouchCtx = {
-    start: number | undefined;
-    start_time: number | undefined
+    start: number;
+    start_time: number;
     boundaries: number[];
     moving: boolean;
 }
