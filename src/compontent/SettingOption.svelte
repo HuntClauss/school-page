@@ -4,10 +4,10 @@
 	export let icon = ''
 	export let name = ''
 	export let value = ''
-	export let open = () => {console.log("W.I.P.")}
+	export let action = () => {console.log("W.I.P.")}
 </script>
 
-<div class="option" on:click={open}>
+<div class="option" on:click={action}>
 	<div class="icon">
 		<Icon name="{icon}" width="22px" height="22px"/>
 	</div>

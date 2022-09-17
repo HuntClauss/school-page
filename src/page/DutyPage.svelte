@@ -19,7 +19,7 @@
 
 	function default_selection(): number {
 		const curr_day = new Date().getDay()
-		return (1 < curr_day && curr_day < 6) ? curr_day - 1 : 2
+		return (1 < curr_day && curr_day < 6) ? curr_day - 1 : 0
 	}
 
 	let offsets = new Array(working_days.length)

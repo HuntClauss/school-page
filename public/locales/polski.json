@@ -1,0 +1,14 @@
+{"settings":  {
+  "header": "USTAWIENIA",
+  "personalize": "Personalizacja",
+  "language": "Język",
+  "filters": "Filtry",
+  "theme": "Motyw",
+  "default_day": "Domyślny dzień"
+},
+"settings_opts": {
+  "language": {
+    "header": "Języki",
+    "description": "Lista języków na które został przetłumaczony interfejs strony."
+  }
+}}

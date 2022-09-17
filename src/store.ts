@@ -12,3 +12,5 @@ export const duties_accu = writable({
 
 export const filters = writable([])
 export const navbar = writable(false)
+export const language = writable('polski')
+export const trans = writable(await import('../public/locales/polski.json'))
