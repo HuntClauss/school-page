@@ -11,9 +11,16 @@
 	let duties
 	$: duties = apply_filter($duties_accu[dayKey][timeKey], $filters)
 	let collapsed = true
+	let skip_render = collapsed
 
+	let last_id = undefined
 	function toggle() {
 		collapsed = !collapsed
+		if (last_id !== undefined) clearTimeout(last_id)
+
+		if (collapsed) {
+			last_id = setTimeout(() => skip_render = true, 500)
+		} else skip_render = false
 	}
 
 	function apply_filter(list, filter: string[]) {
@@ -41,12 +48,14 @@
 			<div class="right icon"><Icon name="expand.svg" width="24px" height="24px"/></div>
 		</div>
 		<div class="item-list">
-			{#each duties as duty}
-				<div class="item">
-					<div class="place">{duty.place}</div>
-					<div class="person">{duty.person}</div>
-				</div>
-			{/each}
+			{#if !skip_render}
+				{#each duties as duty}
+					<div class="item">
+						<div class="place">{duty.place}</div>
+						<div class="person">{duty.person}</div>
+					</div>
+				{/each}
+			{/if}
 		</div>
 	</div>
 </div>

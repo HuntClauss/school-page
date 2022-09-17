@@ -52,8 +52,9 @@
 		setup_offsets()
 		setup_transition()
 
-		const resp = await fetch('/data/duties.json')
-		$duties_accu = await resp.json()
+		fetch('/data/duties.json').then(resp => resp.json()).then(json => $duties_accu = json)
+		// const resp = await fetch('/data/duties.json')
+		// $duties_accu = await resp.json()
 	})
 
 	const touch_ctx: ITouchCtx = {start: 0, start_time: 0, boundaries: [], moving: false}

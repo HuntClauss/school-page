@@ -10,10 +10,10 @@ import {navbar} from "../store.js";
 </div>
 
 <nav class:active={$navbar}>
-	<a href="#">Strona Główna</a>
-	<a href="#">Plany Nauczycieli</a>
-	<a href="#">Plan Dyżurów</a>
-	<a href="#">Ustawienia</a>
+	<a href="#/" on:click={_ => $navbar = false}>Strona Główna</a>
+	<a href="#/plan" on:click={_ => $navbar = false}>Plany Nauczycieli</a>
+	<a href="#/duties" on:click={_ => $navbar = false}>Plan Dyżurów</a>
+	<a href="#/settings" on:click={_ => $navbar = false}>Ustawienia</a>
 </nav>
 
 <style lang="scss">
