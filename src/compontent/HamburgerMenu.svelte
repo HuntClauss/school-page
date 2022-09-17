@@ -22,9 +22,11 @@ import {navbar} from "../store.js";
 		pointer-events: all;
 		width: fit-content;
 		position: relative;
-		left: 10px;
-		top: 10px;
+		left: 5px;
+		top: 5px;
+		padding: 0.5rem;
 		z-index: 2;
+
 		&.active > * {
 			&:nth-child(1) {
 				rotate: 45deg;
@@ -63,14 +65,14 @@ import {navbar} from "../store.js";
 		justify-content: center;
 	}
 
+
 	a {
 		color: unset;
 		text-decoration: none;
 		width: 0;
 		overflow: hidden;
-		transition: .2s all ease-in-out;
+		transition: .2s all ease-in;
 		display: block;
-		//pointer-events: none;
 		box-sizing: border-box;
 		white-space: nowrap;
 		margin: 1rem 0;
@@ -78,20 +80,41 @@ import {navbar} from "../store.js";
 		cursor: pointer;
 	}
 
+	$delay: .15s;
+	$post-delay: -.05s;
 	nav.active > a {
-		translate: 0;
 		width: 100%;
 	}
 
-	a:nth-child(2) {
-		transition-delay: .05s;
+	nav.active > a:nth-child(1) {
+		transition-delay: $delay;
 	}
 
-	a:nth-child(3) {
-		transition-delay: .1s;
+	nav.active > a:nth-child(2) {
+		transition-delay: $delay + .05s;
 	}
 
-	a:nth-child(4) {
-		transition-delay: .15s;
+	nav.active > a:nth-child(3) {
+		transition-delay: $delay + .1s;
+	}
+
+	nav.active > a:nth-child(4) {
+		transition-delay: $delay + .15s;
+	}
+
+	nav > a:nth-child(4) {
+		transition-delay: $post-delay;
+	}
+
+	nav > a:nth-child(3) {
+		transition-delay: $post-delay + .05s;
+	}
+
+	nav > a:nth-child(2) {
+		transition-delay: $post-delay + .1s;
+	}
+
+	nav > a:nth-child(1) {
+		transition-delay: $post-delay + .15s;
 	}
 </style>

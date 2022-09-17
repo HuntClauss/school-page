@@ -12,6 +12,7 @@
 	$: duties = apply_filter($duties_accu[dayKey][timeKey], $filters)
 	let collapsed = true
 	let skip_render = collapsed
+	let item_list: HTMLElement
 
 	let last_id = undefined
 	function toggle() {
@@ -19,22 +20,33 @@
 		if (last_id !== undefined) clearTimeout(last_id)
 
 		if (collapsed) {
+			item_list.style.maxHeight = '0'
 			last_id = setTimeout(() => skip_render = true, 500)
-		} else skip_render = false
+		} else {
+			item_list.style.maxHeight = `${Math.min(elements * 40, window.innerHeight)}px`
+			skip_render = false
+		}
 	}
 
 	function apply_filter(list, filter: string[]) {
-		let result = []
-		elements = list.length
-		if (filter.length === 0) return list
+		let result = list
+
 		filter = filter.map(v => v.toLowerCase())
 
-		list.forEach(entry => {
-			if (filter.includes(entry.place.toLowerCase()) || filter.includes(entry.person.toLowerCase())) {
-				result.push(entry)
-			}
-		})
+		if (filter.length !== 0) {
+			result = []
+			list.forEach(entry => {
+				if (filter.includes(entry.place.toLowerCase()) || filter.includes(entry.person.toLowerCase())) {
+					result.push(entry)
+				}
+			})
+		}
+
 		elements = result.length
+		// if (item_list) {
+		// 	item_list.style.maxHeight = `${elements * 40}px`
+		// }
+
 		return result
 	}
 
@@ -47,7 +59,7 @@
 			<div class="middle">{`${times[timeKey].str_start} - ${times[timeKey].str_end}`}</div>
 			<div class="right icon"><Icon name="expand.svg" width="24px" height="24px"/></div>
 		</div>
-		<div class="item-list">
+		<div class="item-list" bind:this={item_list}>
 			{#if !skip_render}
 				{#each duties as duty}
 					<div class="item">
@@ -88,10 +100,11 @@
 		background-color: #D2D2D2;
 		text-align: center;
 		font-size: 16px;
-		padding: 0.2rem 0;
+		padding: 0.5rem 0;
 		margin: 4px 0 0 0;
 		border-radius: 5px;
 		display: flex;
+		cursor: pointer;
 	}
 
 	.time > * {
@@ -127,9 +140,8 @@
 		flex-direction: column;
 		align-items: center;
 		padding: 0 0.8rem;
-		max-height: 100vh;
 		overflow: hidden;
-		transition: all 0.25s ease-in-out;
+		transition: max-height 0.3s ease-in-out;
 	}
 
 	.item {

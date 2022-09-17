@@ -184,7 +184,7 @@
 		width: 100%;
 		background-color: #F4F4F4;
 		top: 2.65rem;
-		z-index: 999;
+		z-index: 2;
 		overflow: hidden;
 		transition: all .2s ease-in-out;
 	}

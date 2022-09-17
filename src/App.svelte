@@ -29,7 +29,6 @@ const hash = createHistory(createHashSource());
 		overflow: hidden;
 		height: 100vh;
 		background-color: #c1c1c1;
-		position: relative;
 	}
 
 	.navigation {
@@ -45,12 +44,15 @@ const hash = createHistory(createHashSource());
 		overflow: hidden;
 		background-color: var(--background);
 		transition: all .5s ease-in-out;
-		z-index: 999;
 	}
 
 	.minimize {
 		scale: 0.8;
-		translate: 65% 0;
+		translate: min(65%, 300px) 0;
+		border-radius: 20px;
+		-webkit-box-shadow: -2px 11px 29px -9px rgba(0,0,0,0.75);
+		-moz-box-shadow: -2px 11px 29px -9px rgba(0,0,0,0.75);
+		box-shadow: -2px 11px 29px -9px rgba(0,0,0,0.75);
 	}
 
 </style>
