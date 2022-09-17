@@ -120,9 +120,6 @@
 </script>
 
 <div class="wrapper">
-	<div class="navigation">
-		<HamburgerMenu></HamburgerMenu>
-	</div>
 	<div class="filter-wrapper">
 		<InputBar bind:value={filter}/>
 	</div>
@@ -147,6 +144,7 @@
 		overflow-x: hidden;
 		height: 100%;
 		scrollbar-width: none;
+		background-color: var(--background);
 
 		&::-webkit-scrollbar {
 			display: none;
@@ -167,14 +165,6 @@
 		display: flex;
 		flex-direction: column;
 		height: 100%;
-	}
-
-	.navigation {
-		width: 100%;
-		display: flex;
-		justify-content: right;
-		padding: 0.7rem;
-		box-sizing: border-box;
 	}
 
 	.filter-wrapper {

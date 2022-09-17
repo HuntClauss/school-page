@@ -11,3 +11,4 @@ export const duties_accu = writable({
 })
 
 export const filters = writable([])
+export const navbar = writable(false)
