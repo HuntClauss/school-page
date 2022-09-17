@@ -3,12 +3,12 @@
 import DutyPage from "./page/DutyPage.svelte";
 import {navbar} from "./store.js";
 import HamburgerMenu from "./compontent/HamburgerMenu.svelte";
+import {createHistory, Route, Router} from "svelte-navigator";
+import createHashSource from "./hashrouter";
 
-function test() {
-	change = !change
-}
 
-let change = false
+// @ts-ignore
+const hash = createHistory(createHashSource());
 
 </script>
 
@@ -17,7 +17,9 @@ let change = false
 		<HamburgerMenu />
 	</div>
 	<div class="content" class:minimize={$navbar} on:click={_ => $navbar = false}>
-		<DutyPage/>
+		<Router history="{hash}">
+			<Route path="/duties" primary="{false}"><DutyPage/></Route>
+		</Router>
 	</div>
 </div>
 
