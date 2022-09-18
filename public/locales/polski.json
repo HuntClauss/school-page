@@ -11,4 +11,32 @@
     "header": "Języki",
     "description": "Lista języków na które został przetłumaczony interfejs strony."
   }
+},
+"homepage": {
+  "what": {
+    "header": "Czym jest ta strona?",
+    "content": [
+      "Plano plan powstał głównie z potrzeby określenia planu nauczycieli w celu wygodniejszego przekładania lekcji w przypadku okienek.",
+      " W tym roku został też udostępniony plan dyżurów ( który wygląda tak: ",
+      ") co skłoniło mnie do stworzenia jego własnej wersji, która byłaby przyjemniejsza dla oka. ",
+      "Dodatkowym argumentem który zachęcił mnie do napisania tej strony była chęć eksplorowania możliwości frameworka JS (svelte) oraz zabawa animacjami."
+    ]
+  },
+  "subpages": {
+    "header": "Dostępne strony",
+    "content": [
+      {
+        "page": "Plany nauczycieli",
+        "description": "(w trakcie tworzenia) Strona zawiera zbiór planów nauczycieli stworzonych na podstawie planów klas dostępnych na stronie szkoły. Plany są na tyle aktualne na ile aktualne są plany na stronie szkoły."
+      },
+      {
+        "page": "Dyżury",
+        "description": "Strona zawiera plan dyżurów nauczycieli w trakcie trwania przerw. Umożliwia w łatwy sposób filtrować i przeglądać dostępny plan po konkretnych osobach i/lub miejscach dyżurów."
+      },
+      {
+        "page": "Ustawienia",
+        "description": "Strona zawiera różne opcje umożliwiające modyfikacje domyślnych zachowań oraz wartości jak i podstawowe ustawienia do personalizacji interfejsu"
+      }
+    ]
+  }
 }}
