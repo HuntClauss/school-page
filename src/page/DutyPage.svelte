@@ -1,6 +1,5 @@
 <script lang="ts">
 
-	import HamburgerMenu from "../compontent/HamburgerMenu.svelte";
 	import InputBar from "../compontent/InputBar.svelte";
 	import Carousel from "../compontent/Carousel.svelte";
 	import {working_days} from '../const'

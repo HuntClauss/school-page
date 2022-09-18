@@ -6,6 +6,7 @@ import HamburgerMenu from "./compontent/HamburgerMenu.svelte";
 import {createHistory, Route, Router} from "svelte-navigator";
 import createHashSource from "./hashrouter";
 import SettingsPage from "./page/SettingsPage.svelte";
+import HomePage from "./page/HomePage.svelte";
 
 
 // @ts-ignore
@@ -19,8 +20,9 @@ const hash = createHistory(createHashSource());
 	</div>
 	<div class="content" class:minimize={$navbar} on:click={_ => $navbar = false}>
 		<Router history="{hash}">
-			<Route path="/duties" primary="{false}"><DutyPage/></Route>
-			<Route path="/settings" primary="{false}"><SettingsPage/></Route>
+			<Route path="/" primary="{false}" component="{HomePage}" />
+			<Route path="/duties" primary="{false}" component="{DutyPage}" />
+			<Route path="/settings" primary="{false}" component="{SettingsPage}" />
 		</Router>
 	</div>
 </div>

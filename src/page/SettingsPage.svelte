@@ -36,6 +36,7 @@
 
 <div class="wrapper">
 	<div class="popup" class:show={show_popup}>
+		<div class="back" on:click={_ => show_popup = false}></div>
 		<div class="panel">
 			<svelte:component this="{popup_content}" close={_ => show_popup = false}/>
 		</div>
@@ -57,13 +58,24 @@
 		left: 0;
 		width: 100vw;
 		height: 100vh;
-		background-color: #00000000;
+		overflow: hidden;
 		z-index: -1;
 		transition: all .3s ease-in-out;
-		overflow: hidden;
+	}
+
+	.back {
+		content: '';
+		width: 100%;
+		height: 100%;
+		background-color: #00000000;
+		transition: all .3s ease-in-out;
 	}
 
 	.popup.show {
+		z-index: 5;
+	}
+
+	.popup.show .back {
 		background-color: #0000004D;
 		z-index: 5;
 	}
