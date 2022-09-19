@@ -1,7 +1,6 @@
 <script lang="ts">
 
 	import {trans} from "../store";
-
 	const lang = $trans["homepage"]
 
 </script>
@@ -9,7 +8,7 @@
 <div class="wrapper">
 	<section>
 		<div class="header">{lang.what.header}</div>
-		<main class="content indent">
+		<main class="indent max-len">
 			<p>{lang.what.content[0]}</p>
 			<p>
 				{lang.what.content[1]}
@@ -21,7 +20,7 @@
 	</section>
 	<section>
 		<div class="header">{lang.subpages.header}</div>
-		<div class="indent">
+		<div class="indent max-len">
 			{#each lang.subpages.content as elem}
 				<div class="element">
 					<span class="page-name">{elem.page}</span> - {elem.description}
@@ -41,6 +40,10 @@
 
 	section {
 		margin-bottom: 3rem;
+	}
+
+	.max-len {
+		max-width: 1000px;
 	}
 
 	.indent {

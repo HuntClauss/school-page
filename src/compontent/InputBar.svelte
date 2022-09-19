@@ -1,16 +1,19 @@
 <script lang="ts">
-	import {duties_accu, filters} from "../store";
+	import {duties_accu} from "../store";
 	import Icon from "./Icon.svelte";
 
 	export let value = ''
+	export let activeFilters = []
+
 	let collapsed = true
 	let options = []
-	let filter: HTMLElement
+	let filterInput: HTMLElement
 
 	let selected = -1
 
+
 	let suggestions
-	$: suggestions = show_suggestions(value), $filters
+	$: suggestions = show_suggestions(value), activeFilters
 	const max_results = 5
 
 	duties_accu.subscribe(v => {
@@ -39,7 +42,7 @@
 
 		options.forEach((opt) => {
 			if (result.length === max_results) return
-			if ($filters.includes(opt.name)) return
+			if (activeFilters.includes(opt.name)) return
 
 			const condition = parts.every(part => opt.name.toLowerCase().includes(part)) // AND filter
 			// const condition = parts.some(part => opt.name.toLowerCase().includes(part)) // OR filter
@@ -66,13 +69,13 @@
 	}
 
 	function add_filter(name: string) {
-		filter.focus()
+		filterInput.focus()
 		value = ''
-		$filters = [...$filters, name]
+		activeFilters = [...activeFilters, name]
 	}
 
 	function remove_filter(name: string) {
-		$filters = $filters.filter(v => v !== name)
+		activeFilters = activeFilters.filter(v => v !== name)
 	}
 
 	function handle_keypress(e: KeyboardEvent) {
@@ -81,7 +84,8 @@
 				e.preventDefault()
 				if (suggestions.length === 1) add_filter(suggestions[0].value)
 				else if (selected >= 0) add_filter(suggestions[selected].value)
-				filter.blur()
+				else break
+				filterInput.blur()
 				break
 			case 'ArrowUp':
 				e.preventDefault()
@@ -93,7 +97,7 @@
 				selected = (selected + 1) % max_results
 				break
 			case 'Escape':
-				filter.blur()
+				filterInput.blur()
 				break
 		}
 	}
@@ -103,12 +107,12 @@
 <div class="wrapper" >
 	<input type="text" placeholder="Filtruj..."
 	       bind:value
-	       bind:this={filter}
+	       bind:this={filterInput}
 	       on:focus={_ => {collapsed = false; selected = -1}}
 	       on:blur={_ => collapsed = true}
 	       on:keydown={handle_keypress}>
 	<div class="filter-list">
-		{#each $filters as filter}
+		{#each activeFilters as filter}
 			<div class="filter" on:click={_ => remove_filter(filter)}>
 				<span>{filter}</span>
 				<Icon name="x.svg" width="18px" height="18px"/>
@@ -184,7 +188,7 @@
 		width: 100%;
 		background-color: #F4F4F4;
 		top: 2.65rem;
-		z-index: 2;
+		z-index: 3;
 		overflow: hidden;
 		transition: all .2s ease-in-out;
 	}

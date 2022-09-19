@@ -1,7 +1,7 @@
 <script lang="ts">
 
 import DutyPage from "./page/DutyPage.svelte";
-import {navbar} from "./store.js";
+import {announcement, navbar} from "./store.js";
 import HamburgerMenu from "./compontent/HamburgerMenu.svelte";
 import {createHistory, Route, Router} from "svelte-navigator";
 import createHashSource from "./hashrouter";
@@ -37,6 +37,19 @@ const hash = createHistory(createHashSource());
 
 	.navigation {
 		position: absolute;
+		width: 100%;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	.announcement {
+		margin-right: 1rem;
+		padding: 5px 13px;
+		background-color: #5486ce;
+		border-radius: 40px;
+		font-size: 12px;
+		color: #dfdfdf;
 	}
 
 	.content {

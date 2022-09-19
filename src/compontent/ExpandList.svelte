@@ -1,15 +1,16 @@
 <script lang="ts">
 
 	import {times} from "../const";
-	import {duties_accu, filters} from "../store";
+	import {duties_accu} from "../store";
 	import Icon from "./Icon.svelte";
 
 	export let dayKey = 0
 	export let timeKey = 0
 	export let elements = 0
+	export let activeFilters = []
 
 	let duties
-	$: duties = apply_filter($duties_accu[dayKey][timeKey], $filters)
+	$: duties = apply_filter($duties_accu[dayKey][timeKey], activeFilters)
 	let collapsed = true
 	let skip_render = collapsed
 	let item_list: HTMLElement
@@ -43,10 +44,6 @@
 		}
 
 		elements = result.length
-		// if (item_list) {
-		// 	item_list.style.maxHeight = `${elements * 40}px`
-		// }
-
 		return result
 	}
 

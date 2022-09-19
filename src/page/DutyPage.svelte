@@ -5,7 +5,7 @@
 	import {working_days} from '../const'
 	import type {ITouchCtx} from "../types";
 	import {onMount} from "svelte";
-	import {duties_accu} from "../store"
+	import {default_filters, duties_accu} from "../store"
 	import DayPlan from "../compontent/DayPlan.svelte";
 
 	let filter = ''
@@ -13,6 +13,7 @@
 	let _duties_ref = new Array(5)
 	let div: HTMLElement
 	let meta = {position: 0, distance: 0}
+	let activeFilters = $default_filters
 
 	$: changePlan(panel_index)
 
@@ -52,8 +53,6 @@
 		setup_transition()
 
 		fetch('/data/duties.json').then(resp => resp.json()).then(json => $duties_accu = json)
-		// const resp = await fetch('/data/duties.json')
-		// $duties_accu = await resp.json()
 	})
 
 	const touch_ctx: ITouchCtx = {start: 0, start_time: 0, boundaries: [], moving: false}
@@ -121,7 +120,7 @@
 
 <div class="wrapper">
 	<div class="filter-wrapper">
-		<InputBar bind:value={filter}/>
+		<InputBar bind:value={filter} bind:activeFilters/>
 	</div>
 	<div class="day-selector">
 		<Carousel keys="{working_days}" bind:selected="{panel_index}" meta="{meta}"/>
@@ -131,7 +130,7 @@
 	     on:touchmove={touch_move} on:touchstart={touch_start} on:touchend={touch_end}>
 		{#each new Array(working_days.length) as _, day}
 			<div class="duties" bind:this={_duties_ref[day]}>
-				<DayPlan day="{day}"/>
+				<DayPlan day="{day}" activeFilters="{activeFilters}"/>
 			</div>
 		{/each}
 	</div>

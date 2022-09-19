@@ -10,6 +10,10 @@
   "language": {
     "header": "Języki",
     "description": "Lista języków na które został przetłumaczony interfejs strony."
+  },
+  "filters": {
+    "header": "Filtry",
+    "description": "Domyślnie stosowane filtry na plan dyżurów."
   }
 },
 "homepage": {

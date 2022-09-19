@@ -10,7 +10,8 @@ export const duties_accu = writable({
     4: placeholder,
 })
 
-export const filters = writable([])
+export const announcement = writable('Aktualizacja: 09.09.2022 | 17:00')
+export const default_filters = writable([])
 export const navbar = writable(false)
 export const language = writable('polski')
 export const trans = writable(await import('../public/locales/polski.json'))

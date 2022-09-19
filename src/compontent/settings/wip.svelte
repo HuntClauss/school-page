@@ -1,18 +1,13 @@
 <script lang="ts">
 
-	import Icon from "../Icon.svelte";
+	import Topbar from "./Topbar.svelte";
 	export let close
 
 
 </script>
 
 <div class="wrapper">
-	<div class="top-bar" on:click={close}>
-		<Icon name="chevron-left.svg"/>
-	</div>
-	<div class="header">W.I.P.</div>
-	<div class="description">W trakcie tworzenia.</div>
-	<hr>
+	<Topbar close="{close}"/>
 </div>
 
 <style>
