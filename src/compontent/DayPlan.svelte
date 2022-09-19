@@ -25,7 +25,7 @@
 <style>
 	.message {
 		font-size: 20px;
-		color: #5A5A5A;
+		color: var(--color-3);
 		width: 100%;
 		text-align: center;
 		margin-top: 3rem;

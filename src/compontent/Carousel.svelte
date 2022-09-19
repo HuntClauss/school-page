@@ -117,7 +117,7 @@
 	}
 
 	.active {
-		color: #5486ce;
+		color: var(--color-accent-1);
 		transition: all .35s ease-in-out;
 	}
 
@@ -131,7 +131,7 @@
 		position: absolute;
 		width: 100px;
 		height: 3px;
-		background-color: #1E62C7;
+		background-color: var(--background-accent-1);
 		bottom: 0;
 		left: 0;
 		z-index: 2;

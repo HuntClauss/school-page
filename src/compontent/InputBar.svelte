@@ -179,14 +179,14 @@
 		border-radius: 6px;
 		padding: 0.7rem;
 		box-sizing: border-box;
-		background-color: #F4F4F4;
+		background-color: var(--background-3);
 	}
 
 	.suggestions {
 		position: absolute;
 		max-height: 100vh;
 		width: 100%;
-		background-color: #F4F4F4;
+		background-color: var(--background-3);
 		top: 2.65rem;
 		z-index: 3;
 		overflow: hidden;
@@ -194,10 +194,10 @@
 	}
 
 	.item {
-		border-bottom: 1px solid var(--background);
+		border-bottom: 1px solid var(--background-1);
 		padding: 0.5rem;
 		cursor: pointer;
-		color: #8E8E8E;
+		color: var(--color-2);
 		display: flex;
 		justify-content: space-between;
 

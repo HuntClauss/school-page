@@ -17,21 +17,4 @@
 		padding: 1rem;
 		box-sizing: border-box;
 	}
-
-	.top-bar {
-		width: fit-content;
-		margin-bottom: 1rem;
-	}
-
-	.header {
-		width: 100%;
-		font-size: 30px;
-	}
-
-	.description {
-		margin-top: 12px;
-		margin-left: 5px;
-		font-size: 14px;
-		color: #5A5A5A;
-	}
 </style>

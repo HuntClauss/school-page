@@ -30,6 +30,6 @@
 		margin-top: 12px;
 		margin-left: 5px;
 		font-size: 14px;
-		color: #5A5A5A;
+		color: var(--color-2);
 	}
 </style>

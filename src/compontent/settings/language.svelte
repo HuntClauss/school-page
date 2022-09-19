@@ -11,8 +11,8 @@
 
 	const options = [
 		{flag: 'poland.svg', value: 'polski', display: 'Polski'},
-		{flag: 'english.svg', value: 'english', display: 'English'},
-		{flag: 'ukrainian.svg', value: 'ukrainian', display: 'український'},
+		// {flag: 'english.svg', value: 'english', display: 'English'},
+		// {flag: 'ukrainian.svg', value: 'ukrainian', display: 'український'},
 	]
 
 </script>

@@ -7,8 +7,23 @@
   -moz-osx-font-smoothing: grayscale;
   -webkit-text-size-adjust: 100%;
 
-  --background: #DFDFDF;
-  --accent-color: #F06C9B;
+
+  /* LIGHT THEME */
+  --background-1: #DFDFDF;
+  --background-2: #D2D2D2;
+  --background-3: #ECECEC;
+  --background-4: #C1C1C1;
+  --background-accent-1: #1E62C7;
+
+  --color-2: #8E8E8E;
+  --color-3: #5A5A5A;
+  --color-accent-1: #5486ce;
+
+  --hamburger-color: #676767;
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
 }
 
 body {
@@ -17,6 +32,6 @@ body {
   height: 100vh;
   min-height: 100%;
   box-sizing: border-box;
-  background-color: var(--background);
+  background-color: var(--background-1);
   font-family: "Open Sans", sans-serif;
 }

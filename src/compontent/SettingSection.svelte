@@ -14,8 +14,8 @@
 	}
 
 	.name {
-		background-color: #d1d1d1;
-		border-radius: 10px 10px 0 0;
+		background-color: var(--background-2);
+		border-radius: 10px 10px 0   0;
 		width: fit-content;
 		padding: 2px 20px;
 		font-size: 14px;

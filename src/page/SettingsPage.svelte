@@ -87,7 +87,7 @@
 
 	.panel {
 		position: absolute;
-		background-color: var(--background);
+		background-color: var(--background-1);
 		width: 100vw;
 		height: 90vh;
 		border-radius: 35px 35px 0 0;

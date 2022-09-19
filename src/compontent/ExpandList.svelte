@@ -94,7 +94,7 @@
 
 	.time {
 		width: 100%;
-		background-color: #D2D2D2;
+		background-color: var(--background-2);
 		text-align: center;
 		font-size: 16px;
 		padding: 0.5rem 0;
@@ -144,7 +144,7 @@
 	.item {
 		width: 100%;
 		display: inline-flex;
-		background-color: #ECECEC;
+		background-color: var(--background-3);
 		padding: 0.4rem;
 		margin-bottom: 2px;
 		font-size: 14px;
@@ -155,6 +155,6 @@
 	}
 
 	.place {
-		color: #5A5A5A;
+		color: var(--color-3);
 	}
 </style>

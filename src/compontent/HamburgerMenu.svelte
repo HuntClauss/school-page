@@ -49,7 +49,7 @@ import {navbar} from "../store.js";
 		width: 35px;
 		height: 4px;
 		border-radius: 30px;
-		background-color: #676767;
+		background-color: var(--hamburger-color);
 		margin: 0.5rem;
 		transition: all .2s ease-in-out;
 	}

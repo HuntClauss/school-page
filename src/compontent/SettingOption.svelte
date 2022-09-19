@@ -20,7 +20,7 @@
 
 <style>
 	.option {
-		background-color: #ebeaeb;
+		background-color: var(--background-3);
 		display: grid;
 		align-items: center;
 		grid-template-columns: min-content max-content auto min-content;
@@ -31,7 +31,7 @@
 	}
 
 	.value {
-		color: #5A5A5A;
+		color: var(--color-3);
 		text-align: right;
 	}
 

@@ -143,7 +143,7 @@
 		overflow-x: hidden;
 		height: 100%;
 		scrollbar-width: none;
-		background-color: var(--background);
+		background-color: var(--background-1);
 
 		&::-webkit-scrollbar {
 			display: none;

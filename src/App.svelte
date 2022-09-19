@@ -32,7 +32,7 @@ const hash = createHistory(createHashSource());
 	.container {
 		overflow: hidden;
 		height: 100vh;
-		background-color: #c1c1c1;
+		background-color: var(--background-4);
 	}
 
 	.navigation {
@@ -59,7 +59,7 @@ const hash = createHistory(createHashSource());
 		padding-top: 60px;
 		flex-direction: column;
 		overflow: hidden;
-		background-color: var(--background);
+		background-color: var(--background-1);
 		transition: all .5s ease-in-out;
 	}
 
