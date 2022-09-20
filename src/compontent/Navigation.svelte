@@ -25,7 +25,7 @@ import {navbar} from "../store.js";
 		left: 5px;
 		top: 5px;
 		padding: 0.5rem;
-		z-index: 2;
+		z-index: 999999;
 
 		&.active > * {
 			&:nth-child(1) {
@@ -65,56 +65,15 @@ import {navbar} from "../store.js";
 		justify-content: center;
 	}
 
-
 	a {
 		color: unset;
 		text-decoration: none;
-		width: 0;
+		width: 100%;
 		overflow: hidden;
-		transition: .2s all ease-in;
 		display: block;
-		box-sizing: border-box;
 		white-space: nowrap;
 		margin: 1rem 0;
 		padding: 1rem 0;
 		cursor: pointer;
-	}
-
-	$delay: .15s;
-	$post-delay: -.05s;
-	nav.active > a {
-		width: 100%;
-	}
-
-	nav.active > a:nth-child(1) {
-		transition-delay: $delay;
-	}
-
-	nav.active > a:nth-child(2) {
-		transition-delay: $delay + .05s;
-	}
-
-	nav.active > a:nth-child(3) {
-		transition-delay: $delay + .1s;
-	}
-
-	nav.active > a:nth-child(4) {
-		transition-delay: $delay + .15s;
-	}
-
-	nav > a:nth-child(4) {
-		transition-delay: $post-delay;
-	}
-
-	nav > a:nth-child(3) {
-		transition-delay: $post-delay + .05s;
-	}
-
-	nav > a:nth-child(2) {
-		transition-delay: $post-delay + .1s;
-	}
-
-	nav > a:nth-child(1) {
-		transition-delay: $post-delay + .15s;
 	}
 </style>

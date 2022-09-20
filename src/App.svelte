@@ -1,8 +1,8 @@
 <script lang="ts">
 
 import DutyPage from "./page/DutyPage.svelte";
-import {announcement, navbar} from "./store.js";
-import HamburgerMenu from "./compontent/HamburgerMenu.svelte";
+import {navbar} from "./store.js";
+import HamburgerMenu from "./compontent/Navigation.svelte";
 import {createHistory, Route, Router} from "svelte-navigator";
 import createHashSource from "./hashrouter";
 import SettingsPage from "./page/SettingsPage.svelte";
@@ -61,6 +61,8 @@ const hash = createHistory(createHashSource());
 		overflow: hidden;
 		background-color: var(--background-1);
 		transition: all .5s ease-in-out;
+		position: relative;
+		z-index: 2;
 	}
 
 	.minimize {
