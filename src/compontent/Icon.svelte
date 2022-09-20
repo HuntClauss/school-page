@@ -4,4 +4,4 @@
 	export let height = '30px'
 </script>
 
-<img width="{width}" height="{height}" src="/assets/{name}" alt="{name}"/>
+<img width="{width}" height="{height}" src="./assets/{name}" alt="{name}"/>

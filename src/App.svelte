@@ -60,7 +60,7 @@ const hash = createHistory(createHashSource());
 		flex-direction: column;
 		overflow: hidden;
 		background-color: var(--background-1);
-		transition: all .5s ease-in-out;
+		transition: all .4s cubic-bezier(0.32, 0.77, 0.62, 1);
 		position: relative;
 		z-index: 2;
 	}
